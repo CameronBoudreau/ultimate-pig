@@ -19,7 +19,7 @@ class Player:
 
     def run_round(self):
         self.reset()
-        while self.turn_count <= self.turns_max:
+        while self.turn_count < self.turns_max:
             self.turn_count += 1
             print("\nTurn: ", self.turn_count)
             self.turn_total = self.run_turn()
@@ -73,25 +73,52 @@ class RandomHoldPlayer(Player):
 
 
 class RandomLimitPlayer(Player):
-    def _init__(self):
-        super().__init__(limit = random.randint(5, 15))
+    def _init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.limit = random.randint(5,15)
 
+    def round_over(self):
+        print("You done!")
+        print("End of round score: ", self.score)
+        self.limit = random.randint(5,15)
+        return self.score
 
 class CautiousPlayer(Player):
-    def _init__(self):
-        super().__init__(limit = 100)
+    def _init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.limit = random.randint(3,7)
 
-    def will_hold(self):
-        return random.choice(range(1,10)) not in range(1,3)
+    def round_over(self):
+        print("You done!")
+        print("End of round score: ", self.score)
+        self.limit = random.randint(3, 7)
+        return self.score
 
-
+    # def will_hold(self):
+    #     return random.choice(range(1,10)) not in range(1,3)
 
 class NormalPlayer(Player):
-    pass
+    def _init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.limit = random.randint(5,15)
+
+    def round_over(self):
+        print("You done!")
+        print("End of round score: ", self.score)
+        self.limit = random.randint(5, 15)
+        return self.score
 
 
 class AgressivePlayer(Player):
-    pass
+    def _init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.limit = random.randint(15,25)
+
+    def round_over(self):
+        print("You done!")
+        print("End of round score: ", self.score)
+        self.limit = random.randint(15, 25)
+        return self.score
 
 
 def main():
@@ -99,11 +126,16 @@ def main():
     game = Game()
     player1 = Player()
     player2 = RandomHoldPlayer()
-    player3 = RandomLimitPlayer()
+    player3 = RandomLimitPlayer(random.randint(5,15))
+    player4 = CautiousPlayer(random.randint(3,7))
+    player5 = NormalPlayer(random.randint(5, 15))
+    player6 = AgressivePlayer(random.randint(15,25))
 
     while True:
 
-        score = player1.run_round()
+        # player3.limit = random.randint(5,15)
+        print("Player limit: ", player6.limit)
+        score = player6.run_round()
         game.score_list.append(score)
 
         if not game.play_again():
