@@ -94,8 +94,6 @@ class CautiousPlayer(Player):
         self.limit = random.randint(3, 7)
         return self.score
 
-    # def will_hold(self):
-    #     return random.choice(range(1,10)) not in range(1,3)
 
 class NormalPlayer(Player):
     def _init__(self, **kwargs):
